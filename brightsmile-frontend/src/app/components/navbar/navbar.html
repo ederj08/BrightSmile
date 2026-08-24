@@ -1,0 +1,51 @@
+<nav class="navbar" [class.scrolled]="scrolled">
+<div class="nav-container">
+
+<!--Logo-->
+<a routerLink="/" class="nav-logo">
+    <span class="logo-icon">✦</span>
+    <span class="logo-text">Bright<strong>Smile</strong></span>
+</a>
+
+<!--Links desktop-->
+<ul class="nav-links">
+  <li><a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Inicio</a></li>
+    <li><a class="nav-link" href="/#services" (click)="scrollToServices($event)" >Servicios</a></li>
+    <li><a class="nav-link" routerLink="/appointment" routerLinkActive="active" >Citas</a></li>
+    <li><a class="nav-link" routerLink="/chat" routerLinkActive="active" >Asistencia IA</a></li>
+</ul>
+
+<!--CTA + hamburger -->
+
+<div class="nav-actions">
+    <a routerLink="/login" class="nav-cta"> Iniciar sesión</a>
+    <button class="hamburger" (click)="toggleMenu()" [class.open]="menuOpen" aria-label="Menú">
+    <span></span><span></span><span></span>
+    </button>
+</div>
+</div>
+</nav>
+
+<!--Menú móvil-->
+<div class="mobile-overlay" [class.open]="menuOpen" (click)="toggleMenu()"></div>
+
+<aside class="mobile-menu" [class.open]="menuOpen">
+  <button class="mobile-close" (click)="toggleMenu()" aria-label="Cerrar menú">✕</button>
+
+  <a class="mobile-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="toggleMenu()">
+    <span class="mobile-icon">⌂</span> Inicio
+  </a>
+  <a class="mobile-link" href="/#services" (click)="scrollToServices($event); toggleMenu()">
+    <span class="mobile-icon">🦷</span> Servicios
+  </a>
+  <a class="mobile-link" routerLink="/appointment" routerLinkActive="active" (click)="toggleMenu()">
+    <span class="mobile-icon">📅</span> Citas
+  </a>
+  <a class="mobile-link" (click)="abrirChat(); toggleMenu()">
+    <span class="mobile-icon">✦</span> Asistencia IA
+  </a>
+  <a class="mobile-link" routerLink="/login" (click)="toggleMenu()">
+    <span class="mobile-icon">🔑</span> Iniciar sesión
+  </a>
+</aside>
+

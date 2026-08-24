@@ -1,0 +1,40 @@
+<div class="chat-widget">
+  <button class="chat-toggle" (click)="toggleChat()">
+    @if (chatAbierto){
+      <span class="close-icon">✕</span>
+    }@else{
+      <img src="images\chat-mascot.png"
+      class="mascot-icon" alt="Chat assistant"/>
+      
+    }
+  </button>
+
+  <div class="chat-box" *ngIf="chatAbierto">
+    <div class="chat-header">
+   <span> Bright - Asistente BrightSmile</span>
+   <button class="chat-minimize" (click)="toggleChat()">-</button>
+    </div>
+
+    <div class="chat-messages" #scrollContainer>
+      <div
+        *ngFor="let msg of mensajes"
+        [ngClass]="msg.sender === 'USER' ? 'msg-user' : 'msg-bot'">
+        <div class="msg-texto">{{msg.content}}</div>
+        <div class="msg-hora">{{msg.timestamp | date:'HH:mm'}}</div>
+      </div>
+
+      <div class="msg-bot msg-typing" *ngIf="escribiendo">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <textarea
+      [(ngModel)]="inputTexto"
+      (keydown.enter)="onEnterPress($any($event))"
+      placeholder="Escribe tu mensaje..."
+      rows="1"></textarea>
+      <button (click)="enviar()">Enviar</button>
+    </div>
+  </div>
+</div>

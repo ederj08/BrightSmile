@@ -1,0 +1,330 @@
+<div class="admin-layout">
+
+  <!----------MOBILE HEADER------------>
+
+  <header class="mobile-admin-header">
+
+    <button class="admin-menu-toggle"
+    (click)="toggleAdminMenu()"
+    aria-label="Open admin menu">
+    
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+ <div class="mobile-admin-brand">
+  <span class="brand-icon">✦</span>
+  <span>BrightSmile</span>
+ </div>
+</header>
+
+  <!-- ═══════ SIDEBAR ═══════ -->
+  <aside class="sidebar" [class.open]="adminMenuOpen">
+    <div class="sidebar-brand">
+      <button class="mobile-sidebar-close"
+      (click)="closeAdminMenu()"
+      aria-label="Close menu"> ✕ </button>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" routerLink="/admin" 
+      (click)="closeAdminMenu()">
+        <span class="nav-icon">▦</span>Dashboard
+      </a>
+      <a class="nav-item" routerLink="/appointment"
+      (click)="closeAdminMenu()">
+        <span class="nav-icon">◎</span>Appointments
+      </a>
+      <a class="nav-item" routerLink="/chat"
+      (click)="closeAdminMenu()">
+        <span class="nav-icon">✦</span>AI Assistant
+      </a>
+      <a class="nav-item" routerLink="/"
+      (click)="closeAdminMenu()">
+        <span class="nav-icon">⌂</span>Public Site
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">{{ username.charAt(0).toUpperCase() }}</div>
+        <div>
+          <p class="user-name">{{ username }}</p>
+          <p class="user-role">Administrator</p>
+        </div>
+      </div>
+      <button class="logout-btn" (click)="logout()">⏻ Logout</button>
+    </div>
+  </aside>
+
+  <!-----------MOBILE SIDEBAR OVERLAY-------------->
+  <div class="admin-sidebar-overlay"
+  [class.open]="adminMenuOpen"
+  (click)="toggleAdminMenu()">
+   </div>
+
+  <!-- ═══════ MAIN CONTENT ═══════ -->
+  <main class="main-content">
+
+    <header class="dashboard-header">
+      <div>
+        <h1 class="dashboard-title">Dashboard</h1>
+        <p class="dashboard-subtitle">Manage all dental appointments</p>
+      </div>
+      <button class="refresh-btn" (click)="refresh()">↻ Refresh</button>
+    </header>
+
+    <!-----BUSCARDOR DE HISTORIAS CLINICAS----->
+    <div class="historial-search-bar">
+      <input 
+      type="text"
+      [(ngModel)]="busquedaDocumento"
+      (keyup.enter)="buscarHistorialPorDocumento()"
+      placeholder="Search clinical history by document number.." />
+      <button class="btn-primary" (click)="buscarHistorialPorDocumento()">
+       🔍 Search History
+      </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon total">◈</div>
+        <div>
+          <p class="stat-label">Total Appointments</p>
+          <p class="stat-value">{{ totalCitas }}</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon pendiente">◉</div>
+        <div>
+          <p class="stat-label">Pending</p>
+          <p class="stat-value">{{ pendientes }}</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon completada">✦</div>
+        <div>
+          <p class="stat-label">Completed</p>
+          <p class="stat-value">{{ completadas }}</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon cancelada">✕</div>
+        <div>
+          <p class="stat-label">Cancelled</p>
+          <p class="stat-value">{{ canceladas }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters-bar">
+      <div class="filter-group">
+        <label>Date</label>
+        <input type="date" [(ngModel)]="fechaSeleccionada"
+          (change)="onFechaChange()" class="filter-input" />
+      </div>
+      <div class="filter-group">
+        <label>Status</label>
+        <select [(ngModel)]="filtroEstado"
+          (change)="onFiltroEstadoChange()" class="filter-input">
+          <option value="TODOS">All</option>
+          <option value="PENDIENTE">Pending</option>
+          <option value="COMPLETADA">Completed</option>
+          <option value="CANCELADA">Cancelled</option>
+        </select>
+      </div>
+      <button class="clear-btn" (click)="limpiarFiltros()">✕ Clear</button>
+    </div>
+
+    <!-- Error -->
+    @if (error) {
+      <div class="error-banner">⚠ {{ error }}</div>
+    }
+
+    <!-- Bulk actions -->
+    @if (citasSeleccionadas.size > 0) {
+      <div class="bulk-actions">
+        <span>{{ citasSeleccionadas.size }} selected</span>
+        <button class="btn-delete" (click)="eliminarSeleccionadas()">
+          🗑 Delete selected
+        </button>
+      </div>
+    }
+
+    <!-- Loading -->
+    @if (loading) {
+      <div class="loading-state">
+        <div class="spinner-large"></div>
+        <p>Loading appointments...</p>
+      </div>
+    }
+
+    <!-- Tabla -->
+    @if (!loading) {
+      <div class="table-container">
+        <table class="appointments-table">
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" [(ngModel)]="seleccionarTodos"
+                  (change)="toggleSeleccionarTodos()">
+              </th>
+              <th>#</th>
+              <th>Patient</th>
+              <th>Document</th>
+              <th>Contact</th>
+              <th>Service</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Notes</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (citasFiltradas.length === 0) {
+              <tr>
+                <td colspan="10" class="empty-state">No appointments found</td>
+              </tr>
+            }
+            @for (cita of citasFiltradas; track cita.id) {
+              <tr class="table-row" [class.selected-row]="estaSeleccionada(cita.id)">
+                <td class="td-checkbox">
+                  <input type="checkbox"
+                    [checked]="estaSeleccionada(cita.id)"
+                    (change)="toggleSeleccion(cita.id)">
+                </td>
+                <td class="td-id">#{{ cita.id }}</td>
+                <td class="td-patient">
+                  <p class="patient-name">{{ cita.pacienteNombre }}</p>
+                  <p class="patient-email">{{ cita.pacienteEmail }}</p>
+                </td>
+                <td class="td-document">
+                  <p class="doc-type">{{ cita.tipoDocumento }}</p>
+                  <p class="doc-number">{{ cita.numeroDocumento }}</p>
+                </td>
+                <td class="td-contact">{{ cita.pacienteTelefono }}</td>
+                <td class="td-service">{{cita.servicio?.nombre ||'-'}}</td>
+                <td class="td-date">{{ formatFecha(cita.fecha) }}</td>
+                <td class="td-time">{{ formatHora(cita.hora) }}</td>
+                <td class="td-status">
+                  <span class="badge" [ngClass]="getBadgeClass(cita.estado)">
+                    {{ cita.estado }}
+                  </span>
+                </td>
+                <td class="td-notes">{{ cita.notas || '—' }}</td>
+                <td class="td-actions">
+                  @if (cita.estado === 'PENDIENTE') {
+                    <button class="action-btn complete" (click)="completarCita(cita.id)">✓ Complete</button>
+                    <button class="action-btn cancel" (click)="cancelarCita(cita.id)">✕ Cancel</button>
+                  }
+                  <button class="action-btn history" (click)="abrirHistorial(cita)">📋 History</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="results-count">
+        Showing {{ citasFiltradas.length }} of {{ totalCitas }} appointments
+      </p>
+    }
+
+    @if (modalHistorialAbierto){
+      <div class="modal-overlay" (click)="cerrarHistorial()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <div>
+              <h2>Clinical History</h2>
+              <p class="modal-subtitle">
+                {{historialPacienteNombre || 'Unknown patient'}}
+                {{historialNumeroDocumento}}
+              </p>
+            </div>
+            <button class="modal-close" (click)="cerrarHistorial()">✕   </button>
+          </div>
+          <div class="modal-body">
+            @if(errorHistorial){
+              <div class="error-banner"> ⚠ {{errorHistorial}}</div>
+            }
+
+            <!--Formulario para nueva entrada-->
+
+           <div class="entrada-form-section">
+            <h3 class="section-tittle">Add new record</h3>
+            <form [formGroup]="entradaForm" (ngSubmit)="agregarEntrada()">
+              <div class="form-group">
+                <label>Diagnosis *</label>
+                <textarea formControlName="diagnostico" rows="2" placeholder="e.g. Mild gingivitis"></textarea>
+              </div>
+              <div class="form-group">
+                <label> Treatment performed</label>
+                <textarea formControlName="tratamientoRealizado" rows="2" placeholder="e.g. Scaling and root planing"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Observation</label>
+                <textarea formControlName="observaciones" rows="2" placeholder="Optional notes"></textarea>
+              </div>
+              <button type="submit" class="btn-primary" [disabled]="guardandoEntrada">
+                  @if (guardandoEntrada) {
+                    Saving...
+                  } @else {
+                    + Add record
+                  }
+                </button>
+            </form>
+           </div> 
+
+           <!-----Lista de entradas----->
+          <div class="entradas-list-section">
+            <div class="entradas-list-header">
+             <h3 class="section-title">Record history ({{ entradasHistorial.length }})</h3>
+                <button
+                 class="btn-outline"
+                  [disabled]="descargandoPdf || entradasHistorial.length === 0"
+                  (click)="descargarPdf()">
+                  @if (descargandoPdf) {
+                    Generating...
+                  } @else {
+                    ⬇ Download PDF
+                  }
+                </button>
+            </div>
+
+            @if (cargandoHistorial){
+              <div class="loading-state">
+                <div class="spinner-large"></div>
+              </div>
+            }
+
+            @if(!cargandoHistorial && entradasHistorial.length ===0){
+              <p class="empty-state">No clinical record yet.</p>
+            }
+
+            @if (!cargandoHistorial){
+              <div class="entradas-list">
+                @for (entrada of entradasHistorial; track entrada.id){
+                  <div class="entrada-item">
+                    <div class="entrada-fecha">{{entrada.fecha}}</div>
+                    <p><strong>Diagnosis:</strong>{{entrada.diagnostico}}</p>
+                    @if (entrada.tratamientoRealizado){
+                      <p><strong>Treatment:</strong>{{entrada.tratamientoRealizado}}</p>
+                    }
+                    @if(entrada.observaciones){
+                      <p><strong>Observations:</strong>{{entrada.observaciones}}</p>
+                    }
+                    <p class="entrada-creador">Recorded by:{{entrada.creadoPor}}</p>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+          
+          </div>
+        </div>
+      </div>
+    }
+
+  </main>
+</div>

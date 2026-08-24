@@ -1,0 +1,93 @@
+<div class="login-page">
+
+  <!-- Panel izquierdo — visual decorativo -->
+  <div class="login-visual">
+    <div class="visual-overlay"></div>
+    <div class="visual-content">
+      <div class="brand-badge">✦ BrightSmile</div>
+      <h2 class="visual-headline">Tu sonrisa,<br>nuestra<br>prioridad.</h2>
+      <p class="visual-sub">Sistema inteligente de gestión dental</p>
+      <div class="visual-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <!-- Círculos decorativos -->
+    <div class="deco-circle c1"></div>
+    <div class="deco-circle c2"></div>
+    <div class="deco-circle c3"></div>
+  </div>
+
+  <!-- Panel derecho — formulario -->
+  <div class="login-panel">
+    <div class="login-card">
+
+      <div class="card-header">
+        <h1 class="card-title">Bienvenido</h1>
+        <p class="card-subtitle">Ingresa tus credenciales para continuar</p>
+      </div>
+
+      <!-- Mensaje de error -->
+      @if (error) {
+        <div class="error-alert">
+          <span>⚠</span> {{ error }}
+        </div>
+      }
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+
+        <!-- Usuario -->
+        <div class="form-group">
+          <label for="username">Usuario</label>
+          <div class="input-wrapper">
+            <span class="input-icon">◎</span>
+            <input
+              id="username"
+              type="text"
+              formControlName="username"
+              placeholder="Tu nombre de usuario"
+              [class.invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+            />
+          </div>
+          @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
+            <span class="field-error">El usuario es requerido</span>
+          }
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <div class="input-wrapper">
+            <span class="input-icon">◈</span>
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="••••••••"
+              [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"/>
+            <button type="button" class="toggle-pw" (click)="togglePassword()">
+              {{ showPassword ? '🙈' : '👁' }}
+            </button>
+          </div>
+          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+            <span class="field-error">Mínimo 6 caracteres</span>
+          }
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="login-btn" [disabled]="loading">
+          @if (loading) {
+            <span class="spinner"></span> Verificando...
+          } @else {
+            Ingresar al sistema →
+          }
+        </button>
+
+      </form>
+
+      <p class="login-footer">
+        ¿Problemas para acceder? <a routerLink="/">Contacta al administrador</a>
+      </p>
+    </div>
+  </div>
+
+</div>

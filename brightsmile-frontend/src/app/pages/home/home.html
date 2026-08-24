@@ -1,0 +1,209 @@
+<app-navbar />
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section class="hero">
+  <div class="hero-container">
+
+    <!-- Contenido izquierdo -->
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        IA-Powered Dental Scheduling
+      </div>
+
+      <h1 class="hero-title">
+        Your smile,<br>
+        <span class="title-accent">scheduled</span><br>
+        with intelligence.
+      </h1>
+
+      <p class="hero-subtitle">
+        BrightSmile uses AI to find the perfect appointment time for you.
+        Real-time chat, instant booking, zero waiting.
+      </p>
+
+      <div class="hero-actions">
+        <a routerLink="/appointment" class="btn-primary">
+          Book Appointment →
+        </a>
+        <a routerLink="/chat" class="btn-secondary">
+          Chat with AI ✦
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">8</span>
+          <span class="stat-label">Services</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">47</span>
+          <span class="stat-label">Time slots</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">3</span>
+          <span class="stat-label">Specialists</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual derecho -->
+    <div class="hero-visual">
+      <div class="visual-card main-card">
+        <div class="card-header-visual">
+          <div class="avatar">👨‍⚕️</div>
+          <div>
+            <p class="card-name">Dr. Martinez</p>
+            <p class="card-role">Lead Dentist</p>
+          </div>
+          <span class="status-badge">Available</span>
+        </div>
+        <div class="card-service">Dental Cleaning · 60 min</div>
+        <div class="card-time-slots">
+          <span class="time-slot active">9:00 AM</span>
+          <span class="time-slot">10:30 AM</span>
+          <span class="time-slot">2:00 PM</span>
+          <span class="time-slot">3:30 PM</span>
+        </div>
+        <button class="card-cta">Confirm Booking</button>
+      </div>
+
+      <div class="visual-card chat-card">
+        <div class="chat-bubble ai">
+          <span class="ai-icon">✦</span>
+          How can I help you schedule your visit today?
+        </div>
+        <div class="chat-bubble user">
+          I need a cleaning next Monday morning.
+        </div>
+        <div class="chat-bubble ai typing">
+          <span class="ai-icon">✦</span>
+          I found 3 available slots for Monday...
+        </div>
+      </div>
+
+      <!-- Círculos decorativos -->
+      <div class="deco-blob b1"></div>
+      <div class="deco-blob b2"></div>
+    </div>
+
+  </div>
+
+  <!-- Ola separadora -->
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#f7faf9"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════════════ SERVICES ═══════════════════════════════ -->
+<section class="services" id="services">
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-tag">What we offer</span>
+      <h2 class="section-title">Our Dental Services</h2>
+      <p class="section-subtitle">Professional care for every smile, powered by modern technology.</p>
+    </div>
+
+    <div class="services-grid">
+      @for (service of services; track service.name) {
+        <div class="service-card">
+          <div class="service-icon">{{ service.icon }}</div>
+          <h3 class="service-name">{{ service.name }}</h3>
+          <a routerLink="/appointment" class="service-cta">Book now →</a>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-----------------------------------ABOUT US--------------------------->
+
+<section class="about" id="about">
+  <div class=" section-container">
+    <div class="about-grid">
+
+      <div class="about-content">
+        <span class="section-tag">Who we are</span>
+        <h2 class="section-title">About BrightSmile</h2>
+        <p class="about-text">
+          BrightSmile Dental combines modern dentistry with intelligent technology. Our team of experience specialists is dedicated to giving you a healthy, confident smile - while our AI-powered system makes scheduling effortless, available anytime you need it.
+        </p>
+
+        <div class="about-features">
+          <div class="about-features">
+            <span class="feature-icon">🦷</span>
+            <div>
+              <h4>Expert Care</h4>
+              <p>Certified specialist with years of clinical experience</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <span class="feature-icon">✦</span>
+            <div>
+              <h4>AI-Powered</h4>
+              <p>Smart scheduling that finds the best time for you, instantly.</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <span class="feature-icon">💙</span>
+            <div>
+              <h4>Patient-first</h4>
+              <p>Comfortable, transparent and stress-free dental visits.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-stat-card">
+          <span class="about-stat-number">3</span>
+          <span class="about-stat-label">Specialists</span>
+        </div>
+      
+      <div class="about-stat-card">
+      <span class="about-stat-number">8</span>
+      <span class="about-stat-label">Services offered</span>
+      </div>
+
+      <div class="about-stat-card">
+        <span class="about-stat-number">24/7</span>
+        <span class="about-stat-label">AI Assistant</span>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ CTA BANNER ═══════════════════════════════ -->
+<section class="cta-banner">
+  <div class="cta-container">
+    <div class="cta-content">
+      <h2 class="cta-title">Ready to book your appointment?</h2>
+      <p class="cta-sub">Our AI assistant is available 24/7 to help you schedule.</p>
+    </div>
+    <div class="cta-actions">
+      <a routerLink="/appointment" class="btn-primary">Book Now →</a>
+      <a routerLink="/login" class="btn-outline">Staff Login</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <span class="footer-logo">✦ BrightSmile</span>
+      <p>AI-powered dental scheduling system.</p>
+    </div>
+    <div class="footer-links">
+      <a routerLink="/">Home</a>
+      <a routerLink="/appointment">Appointments</a>
+      <a routerLink="/chat">AI Chat</a>
+      <a routerLink="/login">Login</a>
+    </div>
+    <p class="footer-copy">© 2026 BrightSmile. Built with Spring Boot + Angular + OpenAI.</p>
+  </div>
+</footer>

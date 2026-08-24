@@ -1,0 +1,137 @@
+/* You can add global styles to this file, and also import other style files */
+/* AOS animations */
+@import 'aos/dist/aos.css';
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;500;600;700&display=swap');
+
+/* Reset global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Variables de colores — tema BrightSmile Dental */
+:root {
+  --primary: #0ea5e9;        /* azul cielo — color principal */
+  --primary-dark: #0284c7;   /* azul más oscuro para hover */
+  --secondary: #f0f9ff;      /* azul muy claro para fondos */
+  --accent: #06b6d4;         /* cyan para detalles */
+  --dark: #0f172a;           /* casi negro para textos */
+  --gray: #64748b;           /* gris para textos secundarios */
+  --light: #f8fafc;          /* blanco hueso para fondos */
+  --white: #ffffff;
+  --success: #10b981;        /* verde para confirmaciones */
+  --warning: #f59e0b;        /* amarillo para advertencias */
+  --error: #ef4444;          /* rojo para errores */
+  --border: #e2e8f0;         /* color de bordes */
+  --shadow: 0 4px 24px rgba(14, 165, 233, 0.12);
+}
+
+/* Tipografía base */
+body {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  color: var(--dark);
+  background: var(--light);
+  line-height: 1.6;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+/* Clases utilitarias */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 10px 26px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--gray);
+  margin-bottom: 48px;
+}
+
+/* Animación de loading */
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gray);
+  font-size: 14px;
+}
+
+.loading-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: bounce 1.4s infinite ease-in-out;
+}
+
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+
+html, body{
+  overflow-x: hidden;
+  max-width: 100%;
+}

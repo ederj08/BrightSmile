@@ -1,0 +1,257 @@
+﻿<div class="appointment-page">
+  <div class="page-header">
+    <a routerLink="/" class="back-link">← Back to home</a>
+    <div class="header-brand">✦ BrightSmile</div>
+  </div>
+  <br>
+
+<div class="mode-toggle">
+  <button
+    type="button"
+    class="toggle-btn"
+    [class.active]="modo === 'book'"
+    (click)="cambiarModo('book')">
+    Book an appointment
+  </button>
+  <button
+    type="button"
+    class="toggle-btn"
+    [class.active]="modo === 'cancel'"
+    (click)="cambiarModo('cancel')">
+    Cancel my appointment
+  </button>
+</div>
+
+  <div class="appointment-container">
+    <div class="info-panel">
+      <h1 class="info-title">Book your<br><span class="accent">appointment</span></h1>
+      <p class="info-desc">Fill out the form and our team will confirm your visit within 24 hours.</p>
+      <div class="info-features">
+        <div class="feature">
+          <span class="feature-icon">⚡</span>
+          <div>
+            <p class="feature-title">Instant booking</p>
+            <p class="feature-desc">Real-time availability check</p>
+          </div>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">🦷</span>
+          <div>
+            <p class="feature-title">8 services available</p>
+            <p class="feature-desc">From cleaning to orthodontics</p>
+          </div>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">✦</span>
+          <div>
+            <p class="feature-title">AI-powered scheduling</p>
+            <p class="feature-desc">Smart time slot suggestions</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    @if (modo==='book'){
+    <div class="appointment-card">
+      @if (exito) {
+        <div class="success-card">
+          <div class="success-icon">✓</div>
+          <h2 class="success-title">Appointment booked!</h2>
+          <p class="success-desc">We will send a confirmation to your email shortly.</p>
+          <button class="btn-primary" (click)="nuevaCita()">Book another appointment</button>
+        </div>
+      }
+    
+      @if (!exito) {
+        @if (error) {
+          <div class="error-banner">⚠ {{ error }}</div>
+        }
+      
+
+        <!--Personal information-->
+
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+          <div class="form-section">
+            <h3 class="section-title">Personal information</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <!--Name-->
+                <label>Full name *</label>
+                <input type="text" formControlName="pacienteNombre" placeholder="John Doe"
+                  [class.invalid]="fieldError('pacienteNombre')" />
+                @if (fieldError('pacienteNombre')) {
+                  <span class="field-error">Name is required (min 3 characters)</span>
+                }
+              </div>
+            <!--Id type-->
+              <div class="form-group">
+                <label>Document type *</label>
+                <select formControlName="tipoDocumento"
+                [class.invalid]="fieldError('tipoDocumento')">
+              <option value="disabled selected">Select type...</option>  
+              <option value="PASSPORT">Passport</option>  
+              <option value="NATTIONAL_ID">National ID</option>  
+              <option value="DRIVER_LICENSE">Driver</option>  
+              <option value="OTHER">Other</option>  
+              </select>
+              @if (fieldError('tipoDocumento')){
+                <span class="field-error">Document type is required</span>
+              }
+              </div>
+
+              <!--Id number-->
+              <div class="form-group">
+                <label>Document number *</label>
+                <input
+                type="text"
+                formControlName="numeroDocumento"
+                placeholder="123456789"
+                [class.invalid]="fieldError('numeroDocumento')"/>
+                @if (fieldError('numeroDocumento')){
+                  <span class="field-error">Document number is required </span>
+                }
+              </div>
+              <!--EMAIL-->
+              <div class="form-group">
+                <label>Email *</label>
+                <input type="email" formControlName="pacienteEmail" placeholder="john@example.com"
+                  [class.invalid]="fieldError('pacienteEmail')" />
+                @if (fieldError('pacienteEmail')) {
+                  <span class="field-error">Valid email is required</span>
+                }
+              </div>
+              <!--PHONE NUMBER-->
+              <div class="form-group">
+                <label>Phone *</label>
+                <input type="tel" formControlName="pacienteTelefono" placeholder="3001234567"
+                  [class.invalid]="fieldError('pacienteTelefono')" />
+                @if (fieldError('pacienteTelefono')) {
+                  <span class="field-error">Valid phone number required</span>
+                }
+              </div>
+            </div>
+          </div>
+          <!--SERVICE-->
+          <div class="form-section">
+            <h3 class="section-title">Select service</h3>
+            <div class="servicios-grid">
+              @for (servicio of servicios; track servicio.id) {
+                <div class="servicio-option"
+                  [class.selected]="form.get('servicioId')?.value == servicio.id"
+                  (click)="form.patchValue({servicioId: servicio.id})">
+                  <p class="servicio-nombre">{{ servicio.nombre }}</p>
+                 
+                </div>
+              }
+            </div>
+            @if (fieldError('servicioId')) {
+              <span class="field-error">Please select a service</span>
+            }
+          </div>
+          <!--Date-->
+          <div class="form-section">
+            <h3 class="section-title">Date and time</h3>
+            <div class="form-group">
+              <label>Select date *</label>
+              <input type="date" formControlName="fecha" [min]="getFechaMinima()"
+                (change)="onFechaChange()" [class.invalid]="fieldError('fecha')" />
+              @if (fieldError('fecha')) {
+                <span class="field-error">Date is required</span>
+              }
+            </div>
+            @if (loadingHorarios) {
+              <div class="loading-horarios">Loading available slots...</div>
+            }
+            @if (horarios.length > 0 && !loadingHorarios) {
+              <div class="form-group">
+                <label>Available time slots *</label>
+                <div class="horarios-grid">
+                  @for (horario of horarios; track horario.id) {
+                    <button type="button" class="horario-btn"
+                      [class.selected]="horaSeleccionada === horario.horaInicio"
+                      (click)="seleccionarHora(horario.horaInicio)">
+                      {{ horario.horaInicio }}
+                    </button>
+                  }
+                </div>
+                @if (fieldError('hora')) {
+                  <span class="field-error">Please select a time slot</span>
+                }
+              </div>
+            }
+            @if (horarios.length === 0 && form.get('fecha')?.value && !loadingHorarios) {
+              <div class="no-horarios">No available slots for this day. Try another date.</div>
+            }
+          </div>
+          <!--NOTES-->
+          <div class="form-section">
+            <div class="form-group">
+              <label>Additional notes (optional)</label>
+              <textarea formControlName="notas" placeholder="Any special requirements..." rows="3"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn-submit" [disabled]="loading">
+            @if (loading) {
+              <span class="spinner"></span> Booking...
+            } @else {
+              Confirm Appointment →
+            }
+          </button>
+        </form>
+      }
+    </div>
+  }
+  @if (modo==='cancel'){
+    <div class="appointment-card">
+      <h3 class="section-title">Find your appointment</h3>
+
+      <form [formGroup]="buscarForm" (ngSubmit)="buscarCitas()" novalidate>
+        <div class="form-group">
+          <label>Document number *</label>
+          <input
+            type="text"
+            formControlName="numeroDocumento"
+            placeholder="123456789"
+            [class.invalid]="buscarForm.get('numeroDocumento')?.invalid && buscarForm.get('numeroDocumento')?.touched" />
+        </div>
+        <button type="submit" class="btn-submit" [disabled]="buscando">
+          @if (buscando) {
+            <span class="spinner"></span> Searching...
+          } @else {
+            Search appointments
+          }
+        </button>
+      </form>
+
+      @if (errorBusqueda) {
+        <div class="error-banner">⚠ {{ errorBusqueda }}</div>
+      }
+
+      @if (citasEncontradas.length > 0) {
+        <div class="citas-encontradas">
+          @for (cita of citasEncontradas; track cita.id) {
+            <div class="cita-item">
+              <div class="cita-info">
+                <p class="cita-fecha">{{ cita.fecha }} · {{ cita.hora }}</p>
+                <p class="cita-paciente">{{ cita.pacienteNombre }}</p>
+                <p class="cita-estado">Status: {{ cita.estado }}</p>
+              </div>
+              <button
+                type="button"
+                class="btn-cancel"
+                [disabled]="cancelandoId === cita.id"
+                (click)="cancelarCita(cita)">
+                @if (cancelandoId === cita.id) {
+                  Cancelling...
+                } @else {
+                  Cancel
+                }
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+    }
+  </div>
+</div>

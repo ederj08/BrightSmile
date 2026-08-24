@@ -1,0 +1,276 @@
+/* ── Layout ── */
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-family: 'Lato', sans-serif;
+}
+
+/* ── Panel visual ── */
+.login-visual {
+  position: relative;
+  background: linear-gradient(145deg, #004d37 0%, #00a878 60%, #00d4a0 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.visual-content {
+  position: relative;
+  z-index: 2;
+  padding: 3rem;
+  color: #fff;
+}
+
+.brand-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 2rem;
+}
+
+.visual-headline {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 1rem;
+}
+
+.visual-sub {
+  font-size: 0.95rem;
+  opacity: 0.75;
+  letter-spacing: 0.04em;
+  margin-bottom: 2.5rem;
+}
+
+.visual-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.visual-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.visual-dots span:first-child {
+  background: #fff;
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* Círculos decorativos */
+.deco-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.c1 { width: 300px; height: 300px; bottom: -80px; right: -80px; }
+.c2 { width: 180px; height: 180px; top: 10%; right: 10%; }
+.c3 { width: 80px; height: 80px; top: 40%; right: 20%; background: rgba(255,255,255,0.05); }
+
+/* ── Panel formulario ── */
+.login-panel {
+  background: #f7faf9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* ── Header ── */
+.card-header {
+  margin-bottom: 2rem;
+}
+
+.card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f2d25;
+  margin: 0 0 0.4rem;
+}
+
+.card-subtitle {
+  color: #6b8a7f;
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+/* ── Error alert ── */
+.error-alert {
+  background: #fff0f0;
+  border: 1px solid #ffc0c0;
+  color: #c0392b;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── Form groups ── */
+.form-group {
+  margin-bottom: 1.4rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2d5045;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 0.9rem;
+  color: #aabfb8;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.6rem;
+  border: 1.5px solid #d0e4df;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  background: #fff;
+  color: #0f2d25;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.input-wrapper input:focus {
+  border-color: #00a878;
+  box-shadow: 0 0 0 4px rgba(0, 168, 120, 0.12);
+}
+
+.input-wrapper input.invalid {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.toggle-pw {
+  position: absolute;
+  right: 0.9rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.toggle-pw:hover { opacity: 1; }
+
+.field-error {
+  display: block;
+  color: #e74c3c;
+  font-size: 0.8rem;
+  margin-top: 0.35rem;
+  padding-left: 0.2rem;
+}
+
+/* ── Botón submit ── */
+.login-btn {
+  width: 100%;
+  padding: 0.95rem;
+  background: #00a878;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(0, 168, 120, 0.35);
+}
+
+.login-btn:hover:not(:disabled) {
+  background: #008c63;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0, 168, 120, 0.4);
+}
+
+.login-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ── Spinner ── */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Footer link ── */
+.login-footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #8aada5;
+  margin-top: 1.5rem;
+}
+
+.login-footer a {
+  color: #00a878;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-footer a:hover { text-decoration: underline; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .login-page { grid-template-columns: 1fr; }
+  .login-visual { min-height: 200px; }
+  .visual-headline { font-size: 1.8rem; }
+}
